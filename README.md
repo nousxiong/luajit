@@ -1,16 +1,5 @@
-README for LuaJIT 2.0.3
------------------------
+Forked from https://github.com/LuaDist/luajit .
 
-LuaJIT is a Just-In-Time (JIT) compiler for the Lua programming language.
+The biicode block "https://www.biicode.com/nousxiong/luajit" has been generated from the forked github repo: "https://github.com/nousxiong/luajit".
 
-Project Homepage: http://luajit.org/
-
-LuaJIT is Copyright (C) 2005-2014 Mike Pall.
-LuaJIT is free software, released under the MIT license.
-See full Copyright Notice in the COPYRIGHT file or in luajit.h.
-
-Documentation for LuaJIT is available in HTML format.
-Please point your favorite browser to:
-
- doc/luajit.html
-
+It includes slight modifications added to the original repository (https://github.com/LuaDist/luajit) in order to work properly with biicode. 
