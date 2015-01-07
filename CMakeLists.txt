@@ -178,7 +178,9 @@ if (BIICODE)
   ## GENERATE VM
   # Build minilua
   add_executable ( minilua src/host/minilua.c )
-  target_link_libraries ( minilua ${LIBS} )
+  if (LIBS)
+    target_link_libraries ( minilua ${LIBS} )
+  endif ()
 
   # Dynasm
   set ( DASM ${CMAKE_CURRENT_SOURCE_DIR}/dynasm/dynasm.lua )
@@ -349,21 +351,21 @@ if (BIICODE)
     target_compile_definitions (${BII_BLOCK_TARGET} INTERFACE ${LUA_WIN_DEF})
   endif ()
 
-  if (${BII_LIB_TYPE} STREQUAL "SHARED")
+  if (LIBS AND ${BII_LIB_TYPE} STREQUAL "SHARED")
     target_link_libraries ( ${BII_LIB_TARGET} ${LIBS} )
   endif ()
   set_target_properties ( ${BII_LIB_TARGET} PROPERTIES OUTPUT_NAME lua CLEAN_DIRECT_OUTPUT 1 )
 
   ## LuaJIT Executable
   target_link_libraries ( ${BII_src_luajit_TARGET} ${BII_LIB_TARGET} )
-  if (${BII_LIB_TYPE} STREQUAL "STATIC")
+  if (LIBS AND ${BII_LIB_TYPE} STREQUAL "STATIC")
     target_link_libraries ( ${BII_src_luajit_TARGET} ${LIBS} )
   endif ()
 
   # On Windows build a no-console variant also
   if ( LUA_BUILD_WLUA )
     target_link_libraries ( ${BII_src_wmain_TARGET} ${BII_LIB_TARGET} )
-    if (${BII_LIB_TYPE} STREQUAL "STATIC")
+    if (LIBS AND ${BII_LIB_TYPE} STREQUAL "STATIC")
       target_link_libraries ( ${BII_src_wmain_TARGET} ${LIBS} )
     endif ()
   endif ()
