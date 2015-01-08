@@ -11,7 +11,8 @@ if (BIICODE)
   project ( luajit C ASM)
   cmake_minimum_required ( VERSION 2.8 )
   include ( cmake/dist.cmake )
-  include ( lua )
+  # Nous Xiong: change "lua" to "cmake/lua.cmake"
+  include ( cmake/lua.cmake )
   
   # Initializes block variables.
   INIT_BIICODE_BLOCK()
@@ -179,7 +180,7 @@ if (BIICODE)
   # Build minilua
   add_executable ( minilua src/host/minilua.c )
   if (LIBS)
-    target_link_libraries ( minilua ${LIBS} )
+    target_link_libraries ( minilua PUBLIC ${LIBS} )
   endif ()
 
   # Dynasm
@@ -331,9 +332,11 @@ if (BIICODE)
   
   # Nous Xiong: set lib and exe src
   set (BII_LIB_SRC ${LJCORE_C} ${DEPS})
-  set (BII_nousxiong_luajit_src_luajit_SRC src/luajit.c src/luajit.rc)
+  set (BII_src_luajit_SRC src/luajit.c src/luajit.rc)
   if (LUA_BUILD_WLUA)
-    set (BII_nousxiong_luajit_src_wmain_SRC src/wmain.c src/luajit.c src/luajit.rc)
+    set (BII_src_wmain_SRC src/wmain.c src/luajit.c src/luajit.rc)
+    # Nous Xiong: manual adding src_wmain exe
+    list (APPEND BII_BLOCK_EXES src_wmain)
   else ()
     list (REMOVE_ITEM BII_BLOCK_EXES 
       src_wmain
@@ -352,21 +355,21 @@ if (BIICODE)
   endif ()
 
   if (LIBS AND ${BII_LIB_TYPE} STREQUAL "SHARED")
-    target_link_libraries ( ${BII_LIB_TARGET} ${LIBS} )
+    target_link_libraries ( ${BII_LIB_TARGET} PUBLIC ${LIBS} )
   endif ()
   set_target_properties ( ${BII_LIB_TARGET} PROPERTIES OUTPUT_NAME lua CLEAN_DIRECT_OUTPUT 1 )
 
   ## LuaJIT Executable
-  target_link_libraries ( ${BII_src_luajit_TARGET} ${BII_LIB_TARGET} )
+  target_link_libraries ( ${BII_src_luajit_TARGET} PUBLIC ${BII_LIB_TARGET} )
   if (LIBS AND ${BII_LIB_TYPE} STREQUAL "STATIC")
-    target_link_libraries ( ${BII_src_luajit_TARGET} ${LIBS} )
+    target_link_libraries ( ${BII_src_luajit_TARGET} PUBLIC ${LIBS} )
   endif ()
 
   # On Windows build a no-console variant also
   if ( LUA_BUILD_WLUA )
-    target_link_libraries ( ${BII_src_wmain_TARGET} ${BII_LIB_TARGET} )
+    target_link_libraries ( ${BII_src_wmain_TARGET} PUBLIC ${BII_LIB_TARGET} )
     if (LIBS AND ${BII_LIB_TYPE} STREQUAL "STATIC")
-      target_link_libraries ( ${BII_src_wmain_TARGET} ${LIBS} )
+      target_link_libraries ( ${BII_src_wmain_TARGET} PUBLIC ${LIBS} )
     endif ()
   endif ()
   
