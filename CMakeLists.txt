@@ -385,5 +385,5 @@ if (BIICODE)
   endif ()
   
 else ()
-  include (CMakeList_original.txt)
+  include (CMakeLists_original.txt)
 endif ()
