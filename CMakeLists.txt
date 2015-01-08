@@ -349,6 +349,17 @@ if (BIICODE)
   # Nous Xiong: add include dirs for LuaJIT Library
   target_include_directories (${BII_BLOCK_TARGET} INTERFACE ${CMAKE_CURRENT_BINARY_DIR} dynasm src src/host)
   
+  # Nous Xiong: set readline and curses
+  if ( LUA_USE_READLINE )
+    # Add readline
+    target_include_directories ( ${BII_BLOCK_TARGET} INTERFACE ${READLINE_INCLUDE_DIR} )
+  endif ()
+
+  if ( LUA_USE_CURSES )
+    # Add curses
+    target_include_directories ( ${BII_BLOCK_TARGET} INTERFACE ${CURSES_INCLUDE_DIR} )
+  endif ()
+  
   # Nous Xiong: set defs on win
   if ( WIN32 AND NOT CYGWIN )
     target_compile_definitions (${BII_BLOCK_TARGET} INTERFACE ${LUA_WIN_DEF})
