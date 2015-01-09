@@ -365,23 +365,17 @@ if (BIICODE)
     target_compile_definitions (${BII_BLOCK_TARGET} INTERFACE ${LUA_WIN_DEF})
   endif ()
 
-  if (LIBS AND ${BII_LIB_TYPE} STREQUAL "SHARED")
+  if (LIBS)
     target_link_libraries ( ${BII_LIB_TARGET} PUBLIC ${LIBS} )
   endif ()
   set_target_properties ( ${BII_LIB_TARGET} PROPERTIES OUTPUT_NAME lua CLEAN_DIRECT_OUTPUT 1 )
 
   ## LuaJIT Executable
   target_link_libraries ( ${BII_src_luajit_TARGET} PUBLIC ${BII_LIB_TARGET} )
-  if (LIBS AND ${BII_LIB_TYPE} STREQUAL "STATIC")
-    target_link_libraries ( ${BII_src_luajit_TARGET} PUBLIC ${LIBS} )
-  endif ()
 
   # On Windows build a no-console variant also
   if ( LUA_BUILD_WLUA )
     target_link_libraries ( ${BII_src_wmain_TARGET} PUBLIC ${BII_LIB_TARGET} )
-    if (LIBS AND ${BII_LIB_TYPE} STREQUAL "STATIC")
-      target_link_libraries ( ${BII_src_wmain_TARGET} PUBLIC ${LIBS} )
-    endif ()
   endif ()
   
 else ()
